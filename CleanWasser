@@ -1,0 +1,104 @@
+import csv 
+sectores = ['Chiguayante', 'Concepcion', 'San_Pedro', 'Hualpen', 'Talcahuano']
+pedidos = []
+
+def validar_cantidad(cantidad):
+    return all (cantidad.values())
+
+def registrar_pedido():
+    print("\n Registrar pedido")
+nombre = input("Nombre")
+apellido = input("Apellido")
+comuna = input("Comuna")
+
+print("Detalles del pedido:")
+disp_6l= int(input("Dispensadores de 6 litros: "))
+disp_10l= int(input("Dispensadores de 10 litros: "))
+disp_20l= int(input("Dispensadores de 20 litros: "))
+if validar_cantidad({'6L': disp_6l,'10L': disp_10l, '20L': disp_20l}):
+     pedido = {
+         'Nombre' : nombre,
+         'Apellido' : apellido,
+         'Comuna' : comuna,
+         '6L' : disp_6l,
+         '10L' : disp_10l,
+         '20L' : disp_20l
+     }
+     pedidos.append(pedido)
+     print("Pedido registrado exitosamente")
+else:
+     print("Error, la suma de las cantidades debe ser mayor a 0.")
+
+def listar_pedidos():
+    print("\n Lista de pedidos")
+    for idx , pedido in enumerate(pedidos, start=1):
+        print(f"Pedido {idx}:")
+        print(f"Nombre:{pedido['Nombre']}")
+        print(f"Apellido:{apellido['Apellido']}")
+        print(f"Comuna:{comuna['Comuna']}")
+        print(f"Detalles del pedido: ")
+        print(f"6L:
+               {pedido['6L']}, 10L:
+                 {pedido['10L']}, 20L:
+                   {pedido['20L']}")
+        print("--------------------------------")
+
+def imprimir_hoja_de_ruta():
+    print("\n Imprimir hoja de ruta")
+    print("Seleccione un sector para generar la hoja de ruta: ")
+    for idx, sector in enumerate(sectores, start=1):
+        print(f"{idx}. {sector}")
+
+    seleccion = int(input("Ingrese el numero del sector"))
+    sector_seleccionado = sectores[seleccion - 1]
+
+    filename = f"hoja_ruta:{sector_seleccionado}.csv"
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Nombre', 'Apellido', 'Comuna', '6L', '10L', '20L'])
+        for pedido in pedidos:
+            writer.writerow([pedido['Nombre'], pedido['Apellido'], pedido["Comuna"], pedido['6L'], pedido['10L'], pedido['20']])
+    print(f"Se ha generado la hoja de ruta para {sector_seleccionado} en el archivo {filename}")
+
+def buscar_id_pedido():
+    print("\n Buscar pedido por ID")
+    id_pedido = int(input("Ingrese el ID del pedido que desea buscar:  "))
+    
+    if id_pedido >= 1 and id_pedido <= len(pedidos):
+        pedido= pedidos [id_pedido - 1]
+        print(f"Pedido encontrado - ID {id_pedido}:")
+        print(f"Nombre: {pedido['Nombre']}")
+        print(f"Apellido:{apellido['Apellido']}")
+        print(f"Comuna:{comuna['Comuna']}")
+        print(f"Detalles del pedido: ")
+        print(f"6L:
+               {pedido['6L']}, 10L:
+                 {pedido['10L']}, 20L:
+                   {pedido['20L']}")      
+    else:
+        print("Pedido no encontrado. Verifique el ID ingresado")    
+
+def menu():True
+while True:
+    print("\n=== Bienvenido a CleanWasser ===")
+    print("1. Registrar pedido")
+    print("2. Listar pedidos")
+    print("3. Imprimir hoja de ruta")
+    print("4. Buscar pedido por ID")
+    print("5. Salir del programa")
+    opcion = input("Elija una opción: ")
+    if opcion == '1':
+        registrar_pedido()
+    elif opcion == '2':
+        listar_pedidos()
+    elif opcion == '3':
+       imprimir_hoja_de_ruta()
+    elif opcion == '4':
+        buscar_id_pedido()
+    elif opcion == '5':
+        print("Saliendo de la aplicación")
+        break
+    else:
+        print("Opción invalida, porfavor solo ingrese las opciones mostradas")
+if __name__ == "__main__":
+     menu()
